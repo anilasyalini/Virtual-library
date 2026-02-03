@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  fileUrl     String
+  fileName    String
+  fileType    String
+  uploader    String   @default("Anonymous Student")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  category    String   @default("Uncategorized")
+}
