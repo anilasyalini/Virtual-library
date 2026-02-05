@@ -1,5 +1,5 @@
 .hero {
-  min-height: 90vh;
+  min-height: 80vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -7,8 +7,39 @@
   text-align: left;
   position: relative;
   overflow: hidden;
-  padding: 4rem 2rem;
+  padding: 4rem 0;
   gap: 4rem;
+}
+
+.header {
+  padding: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.navLink {
+  color: var(--text-muted);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  color: var(--foreground);
 }
 
 .heroContent {
@@ -35,10 +66,21 @@
   height: auto;
   border-radius: 20px;
   transition: transform 0.5s ease;
+  display: block;
 }
 
 .heroImage:hover img {
   transform: scale(1.05);
+}
+
+.heroActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.exploreBtn {
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
 }
 
 .title {
@@ -47,6 +89,7 @@
   margin-bottom: 1.5rem;
   background: linear-gradient(to right, #fff, #818cf8);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 800;
   letter-spacing: -2px;

@@ -7,7 +7,7 @@ import { z } from 'zod';
 const uploadSchema = z.object({
     title: z.string().min(3, 'Title must be at least 3 characters').max(100),
     description: z.string().max(500).optional(),
-    category: z.enum(['Computer Science', 'Mathematics', 'Physics', 'Business', 'Literature', 'Uncategorized']),
+    category: z.string().min(2, 'Category must be at least 2 characters').max(50),
 });
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB

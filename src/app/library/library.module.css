@@ -3,15 +3,28 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 3rem;
-    padding-bottom: 1rem;
+    padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
+    gap: 1.5rem;
+}
+
+.libraryLogo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    text-decoration: none;
 }
 
 .searchBar {
-    display: flex;
-    gap: 1rem;
     margin-bottom: 2rem;
     width: 100%;
+}
+
+.searchForm {
+    display: flex;
+    flex: 1;
+    gap: 1rem;
 }
 
 .searchInput {
@@ -125,6 +138,17 @@
     color: var(--text-muted);
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.resourceDate {
+    opacity: 0.6;
+}
+
+.resourceActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
 }
 
 .uploadOverlay {
@@ -317,4 +341,100 @@
 .statLabel {
     color: var(--text-muted);
     font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+    .statsContainer {
+        grid-template-columns: repeat(3, 1fr);
+        display: grid;
+    }
+}
+
+@media (max-width: 768px) {
+    .libraryHeader {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .libraryLogo {
+        justify-content: center;
+    }
+
+    .statsContainer {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .searchForm {
+        flex-direction: column;
+    }
+
+    .searchForm button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .categoryContainer {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+    }
+
+    .categoryCard {
+        padding: 1rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .uploadModal {
+        padding: 1.5rem;
+        height: 100vh;
+        border-radius: 0;
+        overflow-y: auto;
+    }
+
+    .previewModal {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .previewHeader {
+        padding: 0.75rem 1rem;
+    }
+
+    .previewHeader h2 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .uploadBtnText {
+        display: none;
+    }
+
+    .libraryHeader button {
+        position: fixed;
+        bottom: 2rem;
+        right: 1.5rem;
+        z-index: 100;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        padding: 0;
+        justify-content: center;
+        box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);
+    }
+
+    .libraryHeader button span {
+        display: none;
+    }
+
+    .resourceActions {
+        flex-direction: column;
+    }
 }

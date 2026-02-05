@@ -6,13 +6,13 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <div className="container">
-      <header style={{ padding: '2rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.5rem', fontWeight: 'bold' }}>
+      <header className={styles.header}>
+        <div className={styles.logo}>
           <BookOpen className="text-primary" />
           <span className="font-display">UniLib</span>
         </div>
-        <nav style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-          <Link href="/library" style={{ color: 'var(--text-muted)', fontWeight: '500' }}>
+        <nav className={styles.nav}>
+          <Link href="/library" className={styles.navLink}>
             Browse
           </Link>
           <Link href="/library" className="btn-primary">
@@ -30,8 +30,8 @@ export default function Home() {
               The next-generation virtual library for the modern university.
               Seamlessly host, share, and discover educational assets in one premium ecosystem.
             </p>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <Link href="/library" className="btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
+            <div className={styles.heroActions}>
+              <Link href="/library" className={`${styles.exploreBtn} btn-primary`}>
                 <Search size={20} /> Explore Repository
               </Link>
             </div>
@@ -83,7 +83,7 @@ export default function Home() {
       </main>
 
 
-      <footer style={{ padding: '4rem 0', textAlign: 'center', color: 'var(--text-muted)' }}>
+      <footer className={styles.footer}>
         <p>© 2026 UniLib. Supporting Education Everywhere.</p>
       </footer>
     </div>

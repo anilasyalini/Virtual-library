@@ -28,7 +28,12 @@ export default function LibraryPage() {
     const [file, setFile] = useState<File | null>(null);
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
-    const [formCategory, setFormCategory] = useState('Computer Science');
+    const [formCategory, setFormCategory] = useState('');
+
+    const derivedCategories = useMemo(() => {
+        const cats = new Set(resources.map(r => r.category));
+        return ['All', ...Array.from(cats)].sort();
+    }, [resources]);
 
     const fetchResources = useCallback(async () => {
         setLoading(true);
@@ -96,14 +101,14 @@ export default function LibraryPage() {
     }, [resources]);
 
     return (
-        <div className="container" style={{ padding: '2rem 0' }}>
+        <div className="container">
             <header className={styles.libraryHeader}>
-                <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'white' }}>
+                <Link href="/" className={styles.libraryLogo}>
                     <BookOpen className="text-primary" />
                     <h1 className="font-display">UniLib Library</h1>
                 </Link>
                 <button className="btn-primary" onClick={() => setIsUploadOpen(true)}>
-                    <Plus size={20} /> Upload Material
+                    <Plus size={20} /> <span className={styles.uploadBtnText}>Upload Material</span>
                 </button>
             </header>
 
@@ -127,7 +132,7 @@ export default function LibraryPage() {
             </motion.div>
 
             <div className={styles.searchBar}>
-                <form onSubmit={handleSearch} style={{ display: 'flex', flex: 1, gap: '1rem' }}>
+                <form onSubmit={handleSearch} className={styles.searchForm}>
                     <input
                         type="text"
                         placeholder="Search for books, notes, or research papers..."
@@ -142,21 +147,14 @@ export default function LibraryPage() {
             </div>
 
             <div className={styles.categoryContainer}>
-                {[
-                    { name: 'All', icon: <BookOpen className={styles.categoryIcon} /> },
-                    { name: 'Computer Science', icon: <Library className={styles.categoryIcon} /> },
-                    { name: 'Mathematics', icon: <FileText className={styles.categoryIcon} /> },
-                    { name: 'Physics', icon: <Search className={styles.categoryIcon} /> },
-                    { name: 'Business', icon: <Users className={styles.categoryIcon} /> },
-                    { name: 'Literature', icon: <Plus className={styles.categoryIcon} /> }
-                ].map((cat) => (
+                {derivedCategories.map((cat) => (
                     <div
-                        key={cat.name}
-                        className={`${styles.categoryCard} glass ${category === cat.name ? styles.active : ''}`}
-                        onClick={() => setCategory(cat.name)}
+                        key={cat}
+                        className={`${styles.categoryCard} glass ${category === cat ? styles.active : ''}`}
+                        onClick={() => setCategory(cat)}
                     >
-                        {cat.icon}
-                        <span className={styles.categoryLabel}>{cat.name}</span>
+                        {cat === 'All' ? <BookOpen className={styles.categoryIcon} /> : <Library className={styles.categoryIcon} />}
+                        <span className={styles.categoryLabel}>{cat}</span>
                     </div>
                 ))}
             </div>
@@ -195,9 +193,9 @@ export default function LibraryPage() {
                                 </div>
                                 <div className={styles.resourceMeta}>
                                     <span className={styles.badge}>{res.category}</span>
-                                    <span style={{ opacity: 0.6 }}>{new Date(res.createdAt).toLocaleDateString()}</span>
+                                    <span className={styles.resourceDate}>{new Date(res.createdAt).toLocaleDateString()}</span>
                                 </div>
-                                <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto' }}>
+                                <div className={styles.resourceActions}>
                                     <button
                                         onClick={() => setPreviewResource(res)}
                                         className="btn-primary"
@@ -234,14 +232,14 @@ export default function LibraryPage() {
                                 <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Intro to Algorithms" required />
                             </div>
                             <div className={styles.formGroup}>
-                                <label>Category</label>
-                                <select value={formCategory} onChange={(e) => setFormCategory(e.target.value)}>
-                                    <option>Computer Science</option>
-                                    <option>Mathematics</option>
-                                    <option>Physics</option>
-                                    <option>Business</option>
-                                    <option>Literature</option>
-                                </select>
+                                <label>Category (Topic)</label>
+                                <input
+                                    type="text"
+                                    value={formCategory}
+                                    onChange={(e) => setFormCategory(e.target.value)}
+                                    placeholder="e.g. Quantum Physics, History, etc."
+                                    required
+                                />
                             </div>
                             <div className={styles.formGroup}>
                                 <label>Description</label>
