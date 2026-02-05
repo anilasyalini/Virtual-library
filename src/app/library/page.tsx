@@ -22,6 +22,7 @@ export default function LibraryPage() {
     const [category, setCategory] = useState('All');
     const [isUploadOpen, setIsUploadOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [previewResource, setPreviewResource] = useState<Resource | null>(null);
 
     // Form states
@@ -31,19 +32,35 @@ export default function LibraryPage() {
     const [formCategory, setFormCategory] = useState('');
 
     const derivedCategories = useMemo(() => {
+        if (!Array.isArray(resources)) return ['All'];
         const cats = new Set(resources.map(r => r.category));
         return ['All', ...Array.from(cats)].sort();
     }, [resources]);
 
     const fetchResources = useCallback(async () => {
         setLoading(true);
+        setError(null);
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/resources?q=${search}&category=${category}`);
+            const res = await fetch(`/api/resources?q=${search}&category=${category}`);
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Server responded with ${res.status}`);
+            }
 
             const data = await res.json();
-            setResources(data);
+
+            if (Array.isArray(data)) {
+                setResources(data);
+            } else {
+                console.error('Expected array of resources but got:', data);
+                setResources([]);
+                setError('Received unexpected data format from server.');
+            }
         } catch (err) {
-            console.error(err);
+            console.error('Fetch error:', err);
+            setError(err instanceof Error ? err.message : 'Failed to fetch resources. Please check your connection.');
+            setResources([]);
         }
         setLoading(false);
     }, [search, category]);
@@ -90,6 +107,7 @@ export default function LibraryPage() {
     };
 
     const stats = useMemo(() => {
+        if (!Array.isArray(resources)) return { total: 0, categories: 0, recent: 0 };
         return {
             total: resources.length,
             categories: new Set(resources.map(r => r.category)).size,
@@ -164,6 +182,15 @@ export default function LibraryPage() {
                 <div className={styles.loadingContainer}>
                     <div className={styles.spinner}></div>
                     <p>Fetching academic repository...</p>
+                </div>
+            ) : error ? (
+                <div className={styles.emptyState}>
+                    <X size={48} color="#ef4444" />
+                    <h3 style={{ color: '#ef4444' }}>Service Unavailable</h3>
+                    <p>{error}</p>
+                    <button onClick={() => fetchResources()} className="btn-primary" style={{ marginTop: '1rem' }}>
+                        Try Again
+                    </button>
                 </div>
             ) : resources.length > 0 ? (
                 <motion.div
