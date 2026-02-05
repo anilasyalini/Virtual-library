@@ -13,12 +13,14 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
 
 export async function POST(request: NextRequest) {
+    let title: string | null = null;
+    let category: string | null = null;
     try {
         const formData = await request.formData();
         const file = formData.get('file') as File;
-        const title = formData.get('title') as string;
+        title = formData.get('title') as string;
         const description = formData.get('description') as string;
-        const category = formData.get('category') as string;
+        category = formData.get('category') as string;
 
         // 1. Validate File existence and basic properties
         if (!file) {
@@ -60,7 +62,16 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ success: true, resource });
     } catch (error) {
-        console.error('Upload error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        console.error('Upload resource error details:', {
+            error,
+            message: error instanceof Error ? error.message : String(error),
+            stack: error instanceof Error ? error.stack : undefined,
+            title,
+            category
+        });
+        return NextResponse.json({
+            error: 'Internal Server Error',
+            message: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
     }
 }

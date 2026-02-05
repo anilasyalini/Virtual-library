@@ -38,7 +38,8 @@ export default function LibraryPage() {
     const fetchResources = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/resources?q=${search}&category=${category}`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/resources?q=${search}&category=${category}`);
+
             const data = await res.json();
             setResources(data);
         } catch (err) {
