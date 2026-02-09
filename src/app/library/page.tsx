@@ -88,12 +88,14 @@ export default function LibraryPage() {
             if (selectedSpecialization !== 'All') params.append('specialization', selectedSpecialization);
 
             const res = await fetch(`/api/resources?${params.toString()}`);
+            const data = await res.json();
 
             if (!res.ok) {
-                setError(errorData.message || errorData.error || `Server responded with ${res.status}`);
+                setError(data.message || data.error || `Server responded with ${res.status}`);
+                setResources([]);
+                setLoading(false);
+                return;
             }
-
-            const data = await res.json();
 
             if (Array.isArray(data)) {
                 setResources(data);
