@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { BookOpen, Upload, Search, FileText, Download, X, Plus, Library, Users, Eye, GraduationCap, Settings } from 'lucide-react';
-import styles from './library.module.css';
+import styles from './faculty.module.css';
 import Link from 'next/link';
 // We will fetch courses from API now, constants are for initial seed only
 

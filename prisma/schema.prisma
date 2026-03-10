@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
+  url       = env("DATABASE_URL")
 }
 
 model Resource {
@@ -35,4 +35,18 @@ model Specialization {
   course   Course @relation(fields: [courseId], references: [id])
 
   @@unique([name, courseId])
+}
+enum Role {
+  STUDENT
+  FACULTY
+  ADMIN
+}
+
+model User {
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  password   String
+  role       Role
+  createdAt  DateTime @default(now())
 }

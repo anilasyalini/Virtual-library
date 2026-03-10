@@ -15,7 +15,7 @@ export default function Home() {
           <Link href="/library" className={styles.navLink}>
             Browse
           </Link>
-          <Link href="/library" className="btn-primary">
+         <Link href="/login" className="btn-primary">
             Get Started
           </Link>
         </nav>
